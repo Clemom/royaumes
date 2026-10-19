@@ -17,7 +17,10 @@ module.exports = {
         "Un module n'importe jamais l'intérieur d'un autre module, seulement ses entrées publiques.",
       severity: 'error',
       from: { path: '^src/modules/([^/]+)/' },
-      to: { path: '^src/modules/[^/]+/', pathNot: ['^src/modules/$1/', PUBLIC_ENTRIES] },
+      to: {
+        path: '^src/modules/[^/]+/',
+        pathNot: ['^src/modules/$1/', PUBLIC_ENTRIES],
+      },
     },
     {
       // Règle 1, vue depuis le reste du projet (pages, racine de composition, plateforme).
@@ -34,6 +37,15 @@ module.exports = {
       severity: 'error',
       from: { path: '^src/modules/([^/]+)/domain/' },
       to: { pathNot: '^src/modules/$1/domain/' },
+    },
+    {
+      // Règle 2 bis : la couche application ne dépend que du domaine et de ses propres ports,
+      // jamais des adaptateurs de l'infrastructure (architecture hexagonale).
+      name: 'application-ignores-infrastructure',
+      comment: "La couche application d'un module n'importe jamais son infrastructure.",
+      severity: 'error',
+      from: { path: '^src/modules/([^/]+)/application/' },
+      to: { path: '^src/modules/$1/infrastructure/' },
     },
     {
       // Règle 3 : la plateforme est générique et ignore les modules métier.
