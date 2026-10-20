@@ -1,0 +1,37 @@
+[
+  {
+    "scenario": "Village",
+    "requestsPerSecond": 374,
+    "p50": 41,
+    "p99": 132,
+    "errors": 0
+  },
+  {
+    "scenario": "Expéditions ouvertes",
+    "requestsPerSecond": 434,
+    "p50": 44,
+    "p99": 72,
+    "errors": 0
+  },
+  {
+    "scenario": "Classement",
+    "requestsPerSecond": 346,
+    "p50": 51,
+    "p99": 119,
+    "errors": 0
+  },
+  {
+    "scenario": "Marché",
+    "requestsPerSecond": 220,
+    "p50": 87,
+    "p99": 165,
+    "errors": 0
+  },
+  {
+    "scenario": "Taverne",
+    "requestsPerSecond": 347,
+    "p50": 53,
+    "p99": 105,
+    "errors": 0
+  }
+]
