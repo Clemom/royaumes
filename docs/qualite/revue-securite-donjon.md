@@ -16,20 +16,20 @@
 | D8 | L'échéance d'une manche est appréciée par l'horloge du serveur | Commande d'échéance envoyée avant l'échéance | L'échéance est enregistrée dans l'état événementiel et `settle` compare cette valeur à `now`, fourni par le service côté serveur. La commande envoyée par le navigateur ne décide pas de l'heure retenue. | Conforme |
 | D9 | Une action destinée à une manche déjà résolue est refusée | Test « refuse un choix pour une manche déjà résolue » | `SubmitAction` exige que le numéro reçu soit celui de la manche courante ; après résolution, l'API répond avec `ROUND_OVER` et le statut HTTP correspondant. | Conforme |
 | D10 | Connaître l'adresse d'une expédition ne permet pas d'y agir sans en être membre | Action envoyée par un joueur qui n'est pas membre | Les commandes d'action et d'ouverture recherchent le héros correspondant à l'utilisateur authentifié et refusent un utilisateur absent de `state.heroes`. | Conforme |
-| D11 | Aucun joueur ne peut agir au nom d'un compagnon ni écouter le canal en son nom | Test « présente le compagnon comme prêt, et ne le compte pas parmi les membres » ; fonction `isMember` de `rules.ts` | | |
-| D12 | L'intelligence artificielle ne transmet aux joueurs aucune information qu'ils n'auraient pas autrement | Lecture de `companion.ts` et `monster-strategies.ts` ; vue filtrée inchangée | | |
+| D11 | Aucun joueur ne peut agir au nom d'un compagnon ni écouter le canal en son nom | Test « présente le compagnon comme prêt, et ne le compte pas parmi les membres » ; fonction `isMember` de `rules.ts` | Le test confirme qu'un compagnon est présenté comme prêt, mais que son identifiant n'est pas considéré comme celui d'un membre. `isMember` exige un héros non compagnon ; les commandes et l'accès au canal ne peuvent donc pas être utilisés au nom du compagnon. | Conforme |
+| D12 | L'intelligence artificielle ne transmet aux joueurs aucune information qu'ils n'auraient pas autrement | Lecture de `companion.ts` et `monster-strategies.ts` ; vue filtrée inchangée | Les stratégies reçoivent leur contexte uniquement pendant la résolution côté serveur. Leurs choix ne sont pas ajoutés à la vue : `toView` masque les actions des autres héros et exclut la graine ainsi que les salles futures. L'IA n'élargit donc pas les informations transmises au joueur. | Conforme |
 
 ## Synthèse
 
-Les dix exigences contrôlées sont conformes dans le périmètre examiné. Aucun
+Les douze exigences contrôlées sont conformes dans le périmètre examiné. Aucun
 écart bloquant ou non-conformité n'a été relevé.
 
 Les protections reposent sur deux principes complémentaires : les routes
 utilisent exclusivement l'identité issue de l'authentification, et les vues
 ainsi que les notifications temps réel sont filtrées avant d'être transmises au
 navigateur. Les tests automatisés couvrent notamment la confidentialité des
-actions, l'accès aux canaux, les droits de l'hôte, les échéances et les
-écritures concurrentes.
+actions, l'accès aux canaux, l'identité des compagnons, les droits de l'hôte,
+les échéances et les écritures concurrentes.
 
 Un risque résiduel demeure hors du périmètre de cette revue : la sécurité du
 fournisseur d'authentification et de la configuration de production n'est pas
