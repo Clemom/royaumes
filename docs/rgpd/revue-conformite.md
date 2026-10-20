@@ -19,7 +19,7 @@
 
 ## Synthèse
 
-Sur les dix exigences, six sont conformes, deux sont non conformes et deux
+Sur les dix exigences, cinq sont conformes, deux sont non conformes et trois
 restent à vérifier.
 
 Les non-conformités sont :
