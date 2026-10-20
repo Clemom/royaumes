@@ -18,10 +18,12 @@
 | D10 | Connaître l'adresse d'une expédition ne permet pas d'y agir sans en être membre | Action envoyée par un joueur qui n'est pas membre | Les commandes d'action et d'ouverture recherchent le héros correspondant à l'utilisateur authentifié et refusent un utilisateur absent de `state.heroes`. | Conforme |
 | D11 | Aucun joueur ne peut agir au nom d'un compagnon ni écouter le canal en son nom | Test « présente le compagnon comme prêt, et ne le compte pas parmi les membres » ; fonction `isMember` de `rules.ts` | Le test confirme qu'un compagnon est présenté comme prêt, mais que son identifiant n'est pas considéré comme celui d'un membre. `isMember` exige un héros non compagnon ; les commandes et l'accès au canal ne peuvent donc pas être utilisés au nom du compagnon. | Conforme |
 | D12 | L'intelligence artificielle ne transmet aux joueurs aucune information qu'ils n'auraient pas autrement | Lecture de `companion.ts` et `monster-strategies.ts` ; vue filtrée inchangée | Les stratégies reçoivent leur contexte uniquement pendant la résolution côté serveur. Leurs choix ne sont pas ajoutés à la vue : `toView` masque les actions des autres héros et exclut la graine ainsi que les salles futures. L'IA n'élargit donc pas les informations transmises au joueur. | Conforme |
+| D13 | Le canal du classement ne transmet aucune donnée d'événement, en particulier la graine d'une expédition | Test « annonce sur son canal les événements du classement, sans leurs données » ; fonction `present` de `stream-api.ts` | Le canal global sélectionne uniquement les types consommés par la projection du classement. `present` remplace les données par `{}` et ne conserve que la position, le flux, la version et le type ; le test vérifie notamment que la graine d'un événement `GameCreated` n'est pas transmise. | Conforme |
+| D14 | Les informations transmises par le canal du classement sont déjà accessibles à tout joueur connecté | Test « refuse une requête anonyme (401) » ; règle `channelPolicy` du module Classement ; réponse de l'API `/api/ranking/players` | Le canal `ranking` est accessible à tout utilisateur authentifié, sans restriction liée à un joueur ou à une expédition. Il ne transmet que des types d'événements déjà utilisés pour alimenter la vue publique du classement ; le joueur peut relire cette vue via l'API protégée du classement. | Conforme |
 
 ## Synthèse
 
-Les douze exigences contrôlées sont conformes dans le périmètre examiné. Aucun
+Les quatorze exigences contrôlées sont conformes dans le périmètre examiné. Aucun
 écart bloquant ou non-conformité n'a été relevé.
 
 Les protections reposent sur deux principes complémentaires : les routes
