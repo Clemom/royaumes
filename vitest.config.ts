@@ -15,8 +15,9 @@ export default defineConfig({
     env: { NODE_ENV: 'test' },
     // Chaque fichier de test de l'API démarre sa propre base PGlite : sur un poste chargé,
     // ce démarrage peut dépasser le délai par défaut de cinq secondes.
-    testTimeout: 20_000,
-    maxWorkers: 4,
+    testTimeout: process.env.VERCEL ? 60_000 : 20_000,
+    hookTimeout: process.env.VERCEL ? 30_000 : 10_000,
+    maxWorkers: process.env.VERCEL ? 1 : 4,
     // Couverture du code par les tests (TD11), mesurée par la commande pnpm test:coverage.
     coverage: {
       provider: 'v8',
