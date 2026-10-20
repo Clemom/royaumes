@@ -16,6 +16,8 @@
 | D8 | L'échéance d'une manche est appréciée par l'horloge du serveur | Commande d'échéance envoyée avant l'échéance | L'échéance est enregistrée dans l'état événementiel et `settle` compare cette valeur à `now`, fourni par le service côté serveur. La commande envoyée par le navigateur ne décide pas de l'heure retenue. | Conforme |
 | D9 | Une action destinée à une manche déjà résolue est refusée | Test « refuse un choix pour une manche déjà résolue » | `SubmitAction` exige que le numéro reçu soit celui de la manche courante ; après résolution, l'API répond avec `ROUND_OVER` et le statut HTTP correspondant. | Conforme |
 | D10 | Connaître l'adresse d'une expédition ne permet pas d'y agir sans en être membre | Action envoyée par un joueur qui n'est pas membre | Les commandes d'action et d'ouverture recherchent le héros correspondant à l'utilisateur authentifié et refusent un utilisateur absent de `state.heroes`. | Conforme |
+| D11 | Aucun joueur ne peut agir au nom d'un compagnon ni écouter le canal en son nom | Test « présente le compagnon comme prêt, et ne le compte pas parmi les membres » ; fonction `isMember` de `rules.ts` | | |
+| D12 | L'intelligence artificielle ne transmet aux joueurs aucune information qu'ils n'auraient pas autrement | Lecture de `companion.ts` et `monster-strategies.ts` ; vue filtrée inchangée | | |
 
 ## Synthèse
 
