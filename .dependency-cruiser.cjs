@@ -17,10 +17,7 @@ module.exports = {
         "Un module n'importe jamais l'intérieur d'un autre module, seulement ses entrées publiques.",
       severity: 'error',
       from: { path: '^src/modules/([^/]+)/' },
-      to: {
-        path: '^src/modules/[^/]+/',
-        pathNot: ['^src/modules/$1/', PUBLIC_ENTRIES],
-      },
+      to: { path: '^src/modules/[^/]+/', pathNot: ['^src/modules/$1/', PUBLIC_ENTRIES] },
     },
     {
       // Règle 1, vue depuis le reste du projet (pages, racine de composition, plateforme).
@@ -74,10 +71,21 @@ module.exports = {
     {
       // Règle 5 : aucune dépendance circulaire.
       name: 'no-circular',
-      comment: "Deux fichiers ne doivent jamais dépendre l'un de l'autre, même indirectement.",
+      comment: 'Deux fichiers ne doivent jamais dépendre, même indirectement, l’un de l’autre.',
       severity: 'error',
       from: {},
       to: { circular: true },
+    },
+    {
+      // Règle 6 (TD11) : les tables de la plateforme ne sont lues et écrites que par la plateforme.
+      // Un module passe par les fonctions du journal, de la boîte d'envoi ou des projections ;
+      // il n'importe jamais leurs tables. Seule la plateforme peut ainsi modifier un événement.
+      name: 'platform-tables-are-private',
+      comment:
+        "Un module n'importe jamais les tables de la plateforme : il passe par ses fonctions.",
+      severity: 'error',
+      from: { path: '^src/modules/' },
+      to: { path: '^src/platform/[^/]+/schema\\.ts$' },
     },
   ],
   options: {
