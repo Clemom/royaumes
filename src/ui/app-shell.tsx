@@ -10,6 +10,7 @@ export const NAV = [
   { href: '/village', kind: 'village', label: 'Village' },
   { href: '/dungeon', kind: 'dungeon', label: 'Donjon' },
   { href: '/ranking', kind: 'ranking', label: 'Classement' },
+  { href: '/chronicle', kind: 'chronicle', label: 'Succès' },
   { href: '/market', kind: 'market', label: 'Marché' },
   { href: '/tavern', kind: 'tavern', label: 'Taverne' },
 ]
