@@ -6,7 +6,7 @@ supprime une donnée personnelle, dans le même commit que cette évolution.
 
 - Responsable du traitement : Clemom (éditeur du projet), contact via le dépôt
   public [Clemom/royaumes](https://github.com/Clemom/royaumes).
-- Date de dernière mise à jour : 2026-10-20.
+- Date de dernière mise à jour : 2026-10-21.
 
 ## Sous-traitants
 
@@ -21,7 +21,7 @@ supprime une donnée personnelle, dans le même commit que cette évolution.
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | T1 | Comptes des joueurs | Permettre l'accès au jeu et gérer les vérifications temporaires liées à l'authentification | Nom, adresse électronique, empreinte du mot de passe, date d'inscription ; identifiant, valeur et dates des vérifications temporaires | Joueurs, personnes concernées par une vérification | Exécution du contrat (conditions d'utilisation du jeu) | Comptes : jusqu'à la suppression du compte ; vérifications temporaires : durée de conservation effective à vérifier | `identity.user`, `identity.account`, `identity.verification` |
 | T2 | Sessions et limitation des tentatives | Maintenir la connexion ; limiter les tentatives de connexion | Adresse IP, navigateur, dates de la session ; clé associée à une route et une adresse IP, nombre de tentatives et date de dernière tentative | Joueurs, visiteurs | Exécution du contrat ; intérêt légitime (sécurité) | Sessions : jusqu'à l'expiration ou la suppression du compte, purge des sessions expirées restant à mettre en œuvre ; compteurs de limitation : durée de conservation effective à vérifier | `identity.session`, `identity.rate_limit` |
-| T3 | Activité de jeu | Faire fonctionner le Village, le Donjon, le Marché et le Classement | Identifiant, nom du joueur, nom du village, actions de jeu | Joueurs | Exécution du contrat | Jusqu'à la suppression du compte ; ensuite, identifiant pseudonymisé et noms remplacés (ADR 0008) | `platform.events`, `platform.outbox`, `ranking`, `dungeon`, `market` |
+| T3 | Activité de jeu | Faire fonctionner le Village, le Donjon, le Marché, le Classement et les Chroniques | Identifiant et nom du joueur, nom du village, actions de jeu, distinctions obtenues et dates d'obtention, participations aux expéditions | Joueurs | Exécution du contrat | Jusqu'à la suppression du compte pour les données personnelles ; les distinctions sont effacées et les événements historiques sont anonymisés ou pseudonymisés selon l'ADR 0008 | `platform.events`, `platform.outbox`, `ranking`, `dungeon`, `market`, `chronicle.achievements`, `chronicle.game_players` |
 | T4 | Messagerie de la Taverne | Permettre aux joueurs de discuter | Contenu des messages, auteur, date | Joueurs | Exécution du contrat | Trente jours, ou jusqu'à la suppression du compte | `tavern.messages` |
 | T5 | Présence dans la Taverne | Indiquer les joueurs présents | Identifiant, nom, date du dernier signal | Joueurs | Exécution du contrat | Deux minutes après le dernier signal | `tavern.presence` |
 | T6 | Registre des effacements | Démontrer la réalisation des effacements | Date de l'effacement, nombre d'événements réécrits ; aucune donnée sur le joueur | Aucune personne identifiable | Obligation légale (responsabilité, article 5) | Illimitée | `platform.erasures` |
@@ -34,6 +34,7 @@ supprime une donnée personnelle, dans le même commit que cette évolution.
 | TD10 | Création du registre des traitements dans le cadre de la revue RGPD. Les traitements des comptes, sessions, données métier, messages, présence, effacements et journaux techniques sont recensés. |
 | Après le TD11 | Complément du traitement T1 avec la table `identity.verification`, relevée comme manquante lors de la revue initiale. |
 | Après le TD11 | Complément du traitement T2 avec la table `identity.rate_limit`, utilisée pour la limitation partagée des tentatives d'authentification introduite au TD11. |
+| TD final | Ajout des Chroniques au traitement T3 : distinctions, participations aux expéditions, export et effacement des données personnelles. |
 
 Ces modifications complètent le registre existant. Elles ne signifient pas que les tables ajoutées au registre ont été créées à ce moment-là : elles distinguent les évolutions techniques du projet des corrections apportées à sa documentation.
 

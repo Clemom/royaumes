@@ -79,8 +79,11 @@ Un module n'est accessible depuis l'extérieur que par ses entrées publiques : 
 | `realm` | Village : fondation, production de ressources, amélioration des bâtiments | `/api/realm` |
 | `dungeon` | Donjon : expéditions de un à quatre héros, compagnons pilotés par l'ordinateur, deux niveaux de difficulté, combats en manches simultanées | `/api/dungeon` |
 | `ranking` | Classement des joueurs, construit à partir des événements du Village et du Donjon | `/api/ranking` |
+| `chronicle` | Chroniques : succès obtenus à partir des événements du Village et du Donjon | `/api/chronicle` |
 | `market` | Marché : échanges de ressources entre joueurs, par une saga orchestrée | `/api/market` |
 | `tavern` | Taverne : salon de discussion commun et présence des joueurs, sans Event Sourcing | `/api/tavern` |
+
+La page `/chronicle` présente les quatre succès du joueur connecté : Fondateur, Bâtisseur, Éclaireur et Conquérant. Lorsqu'un nouveau succès est obtenu, une notification temporaire apparaît dans le jeu.
 
 ## Temps réel
 
@@ -89,17 +92,19 @@ Les changements sont diffusés aux navigateurs par des Server-Sent Events, à l'
 la règle du module concerné. Le canal `village-<joueur>` n'est ainsi accessible qu'au
 propriétaire du village, et le canal `dungeon-<expédition>` aux seuls membres de l'expédition.
 
-La plupart des canaux correspondent à un flux du journal d'événements. Les canaux `ranking`
-et `market` sont des canaux globaux : ils suivent, dans tout le journal, les événements qui
-modifient le classement ou la liste des offres, et ne transmettent que ceux qui sont
-enregistrés après leur ouverture.
+La plupart des canaux correspondent à un flux du journal d'événements. Les canaux
+`ranking`, `market` et `chronicle` sont des canaux globaux : ils suivent, dans tout
+le journal, les événements susceptibles de modifier le classement, la liste des
+offres ou les succès. Ils ne transmettent que les événements enregistrés après
+leur ouverture.
 
 Le canal `tavern` ne lit pas le journal, mais la table des messages de la Taverne : il
 transmet chaque nouveau message, avec son contenu, à tous les joueurs connectés.
 
-Les canaux du Donjon, du Classement et du Marché sont discrets : ils ne transmettent que la position,
-le type et la version des événements, et chaque navigateur relit sa propre vue, filtrée
-par le serveur.
+Les canaux du Donjon, du Classement, du Marché et des Chroniques sont discrets :
+ils ne transmettent pas les données des événements. Sur les canaux globaux discrets,
+le nom du flux est également masqué. Chaque navigateur relit sa propre vue,
+filtrée par le serveur.
 
 Un flux se ferme de lui-même au bout de 240 secondes, et le navigateur s'y reconnecte
 sans perte d'événement. En développement, la variable `STREAM_MAX_SECONDS` permet de
@@ -153,7 +158,7 @@ démarrage. Pour repartir d'une base vide, arrêtez le serveur et supprimez le r
 
 Les tests utilisent une base PGlite en mémoire, recréée pour chaque fichier de test.
 
-Le classement et la liste des expéditions ouvertes sont des modèles de lecture, tenus à jour
+Le classement, la liste des expéditions ouvertes et les distinctions des Chroniques sont des modèles de lecture, tenus à jour
 par des projections à partir du journal d'événements (ADR 0006). Chaque projection est
 rattrapée à la consultation, et reconstruite automatiquement lorsque sa version change :
 une modification qui change le contenu de ses tables doit donc augmenter sa version.
@@ -188,6 +193,7 @@ sans la première ; sans la seconde, la route des tâches quotidiennes reste fer
 - [Revue de sécurité de l'authentification](docs/qualite/revue-securite-authentification.md)
 - [Revue de sécurité du Donjon](docs/qualite/revue-securite-donjon.md)
 - [Revue de sécurité du Marché](docs/qualite/revue-securite-marche.md)
+- [Revue de sécurité des Chroniques](docs/qualite/revue-securite-chroniques.md)
 - [Registre des traitements](docs/rgpd/registre-traitements.md)
 - [Revue de conformité au RGPD](docs/rgpd/revue-conformite.md)
 - [Bilan technique](docs/bilan-technique.md)

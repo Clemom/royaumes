@@ -53,3 +53,20 @@ La dette DT-004, qui concernait le stockage local des compteurs de limitation, a
 Les corrections ou vérifications ne sont considérées comme terminées qu'après mise à jour de leur revue d'origine et consignation d'une preuve.
 
 Les échéances proposées sont des jalons de suivi, et non des dates de réalisation déjà décidées.
+
+## Suivi du TD final — Chroniques
+
+Le module Chroniques n'introduit pas de nouvelle dette technique bloquante.
+
+Les notifications de succès ne sont pas conservées : elles sont affichées
+temporairement grâce au canal SSE existant. Ce fonctionnement correspond
+au besoin actuel et au choix documenté dans l'ADR-0011.
+
+Le canal global peut déclencher des consultations de l'API sans nouveau
+succès. Ce coût devra être réexaminé si le nombre de joueurs ou
+d'événements augmente.
+
+Les problèmes de reconstruction après effacement RGPD et de divulgation
+des identifiants des flux globaux ont été corrigés et couverts par des tests.
+
+Les dettes techniques historiques DT-001 à DT-010 restent inchangées.
