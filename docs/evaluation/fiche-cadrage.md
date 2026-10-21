@@ -1,9 +1,8 @@
 # Fiche de cadrage : Les Chroniques
 
-- Auteur : à compléter
+- Auteur : Clément Moreau
 - Date : 2026-10-21
 - Nom technique du module : `chronicle`
-- Validée par l'enseignant le : à compléter
 
 ## L'idée
 
