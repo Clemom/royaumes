@@ -17,7 +17,7 @@
 | R9 | Les journaux techniques ne contiennent pas de données personnelles au-delà du nécessaire | Lecture de `app.onError` dans `create-api.ts` ; consultation des journaux de Vercel | `app.onError` renvoie seulement `INTERNAL` au client et journalise l'erreur côté serveur. La durée de conservation Vercel est documentée à une heure sur le plan Hobby, mais le contenu réel des journaux de production n'est pas accessible dans cette revue ; l'absence de données excessives n'est donc pas démontrée. | à vérifier |
 | R10 | Après la suppression d'un compte, l'identifiant conservé ne peut plus être relié à une personne | Recherche de l'identifiant dans `identity`, `platform.outbox` et les journaux de Vercel | L'identité est effacée en dernier et les noms copiés dans le journal sont pseudonymisés. Les tables de développement ne contiennent plus le compte après l'effacement, mais l'audit complet de `platform.outbox` et des journaux Vercel n'a pas été réalisé ; la preuve de l'absence de tout lien résiduel est donc incomplète. | à vérifier |
 
-## Synthèse
+## Synthèse initiale — TD10
 
 Sur les dix exigences, cinq sont conformes, deux sont non conformes et trois
 restent à vérifier.
@@ -40,3 +40,36 @@ Actions décidées :
   base de développement, puis rechercher l'identifiant dans toutes les tables ;
 - consulter les journaux Vercel de production et conserver la preuve de cette
   vérification avec la revue.
+
+  ## Suivi de conformité après le TD11
+
+La revue initiale a été réalisée au TD10, avant les dernières corrections documentaires du projet. Les constats de cette revue sont conservés dans le tableau et la synthèse précédents afin de préserver la chronologie des vérifications.
+
+### Actualisation de l'exigence R1
+
+Lors du TD10, l'exigence R1 avait été déclarée non conforme en raison de l'absence de la table `identity.verification` dans le registre des traitements.
+
+Après le TD11, le registre a été complété pour intégrer :
+
+- `identity.verification`, dans le traitement T1 relatif aux comptes et aux vérifications temporaires ;
+- `identity.rate_limit`, dans le traitement T2 relatif aux sessions et à la limitation des tentatives.
+
+La comparaison avec les schémas concernés confirme que le défaut documentaire initialement identifié a été corrigé.
+
+**Statut actualisé de R1 : conforme sur le périmètre examiné.**
+
+### Situation consolidée
+
+| Indicateur | Au TD10 | Après actualisation |
+| --- | ---: | ---: |
+| Exigences conformes | 5 | 6 |
+| Exigences non conformes | 2 | 1 |
+| Exigences à vérifier | 3 | 3 |
+
+L'exigence R8 reste non conforme : aucune purge applicative des sessions expirées n'est actuellement mise en œuvre.
+
+Les exigences R4, R9 et R10 restent à vérifier. Elles concernent respectivement l'effacement effectif d'un compte réel, le contenu des journaux techniques et l'absence de liens résiduels avec un compte supprimé.
+
+La correction de R1 ne modifie pas rétroactivement les résultats du TD10. Elle constitue une évolution documentée après la revue initiale.
+
+Les actions restantes sont suivies dans `docs/qualite/dette-technique.md`, sans être considérées comme réalisées tant que leur mise en œuvre ou leur vérification n'a pas été démontrée.

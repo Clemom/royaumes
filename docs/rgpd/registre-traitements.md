@@ -27,6 +27,18 @@ supprime une donnée personnelle, dans le même commit que cette évolution.
 | T6 | Registre des effacements | Démontrer la réalisation des effacements | Date de l'effacement, nombre d'événements réécrits ; aucune donnée sur le joueur | Aucune personne identifiable | Obligation légale (responsabilité, article 5) | Illimitée | `platform.erasures` |
 | T7 | Journaux techniques | Diagnostiquer les erreurs, assurer la sécurité | Adresse IP, adresses des requêtes, messages d'erreur | Joueurs, visiteurs | Intérêt légitime (sécurité, maintenance) | Une heure sur le plan Vercel Hobby | Vercel |
 
+## Historique des mises à jour
+
+| Étape | Modification |
+| --- | --- |
+| TD10 | Création du registre des traitements dans le cadre de la revue RGPD. Les traitements des comptes, sessions, données métier, messages, présence, effacements et journaux techniques sont recensés. |
+| Après le TD11 | Complément du traitement T1 avec la table `identity.verification`, relevée comme manquante lors de la revue initiale. |
+| Après le TD11 | Complément du traitement T2 avec la table `identity.rate_limit`, utilisée pour la limitation partagée des tentatives d'authentification introduite au TD11. |
+
+Ces modifications complètent le registre existant. Elles ne signifient pas que les tables ajoutées au registre ont été créées à ce moment-là : elles distinguent les évolutions techniques du projet des corrections apportées à sa documentation.
+
+Les durées de conservation et les points restant à vérifier sont conservés tels quels tant qu'une nouvelle vérification ne justifie pas leur actualisation.
+
 ## Droits des personnes
 
 | Droit | Mise en œuvre |

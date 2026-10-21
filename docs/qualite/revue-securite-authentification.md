@@ -23,6 +23,19 @@
 | S15 | Une requête d'authentification accompagnée d'un cookie et émise depuis une autre origine est refusée | Appel de la déconnexion avec un en-tête `origin` étranger | Le middleware CSRF de Better Auth valide l'origine des requêtes mutantes portant un cookie par rapport aux origines de confiance ; l'origine de base est déterminée par `BETTER_AUTH_URL` ou son URL de repli. | Conforme |
 | S16 | Un flux temps réel n'est accessible qu'aux joueurs connectés, et seulement pour les canaux auxquels ils ont droit | Tests « réserve le temps réel aux joueurs connectés (401) », « refuse l'écoute du village d'un autre joueur (403) » et « refuse un canal qu'aucune règle ne couvre (403) » ; principe de l'accès fermé par défaut dans `channel-policy.ts` | Un visiteur anonyme reçoit une erreur 401, un joueur qui tente d'écouter le village d'un autre joueur une erreur 403. Un canal sans règle est refusé : l'oubli d'une règle par un module futur rend ses canaux inaccessibles, et non publics. | Conforme |
 
+## Historique des vérifications
+
+Cette revue a été initiée au TD4, lors de la mise en place de l'authentification et du contrôle d'accès. Elle a ensuite été enrichie à mesure que l'architecture et le déploiement évoluaient.
+
+| Étape | Évolution | Résultat |
+| --- | --- | --- |
+| TD4 | Première revue de sécurité du parcours d'authentification, sur quinze exigences. | 9 conformes, 6 non conformes. |
+| TD5 | Vérification du cookie `Secure` sur le déploiement HTTPS et ajout de l'exigence S16 relative à la protection des flux temps réel. | S6 devient conforme ; S16 est ajoutée comme conforme. |
+| TD11 | Remplacement des compteurs de limitation des tentatives conservés en mémoire par un stockage partagé dans `identity.rate_limit`. | Dette DT-004 remboursée. La non-conformité S3 reste ouverte, car la possibilité de désactiver la limitation hors Vercel n'est pas strictement réservée au développement. |
+| Bilan après TD11 | Consolidation des constats et des actions correctives encore nécessaires. | 11 exigences conformes, 5 non conformes, aucun risque formellement accepté. |
+
+Les constats relatifs aux versions précédentes ne sont pas rétroactivement modifiés. Les évolutions successives sont conservées pour documenter les améliorations apportées au système et les limites restantes.
+
 ## Synthèse
 
 Sur les 16 exigences examinées :
