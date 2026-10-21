@@ -37,6 +37,7 @@ export const achievementProjection: Projection = {
   eventTypes: ['VillageFounded', 'BuildingUpgraded', 'GameCreated', 'PlayerJoined', 'GameEnded'],
 
   async apply(event, tx) {
+    if (event.data.chronicleErased === true) return
     switch (event.type) {
       case 'VillageFounded':
       case 'BuildingUpgraded': {

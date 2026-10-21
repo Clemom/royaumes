@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import type { Achievement } from '@/modules/chronicle/contracts'
+import { achievementProjection } from '@/modules/chronicle/infrastructure/achievement-projection'
+import { createEventStore } from '@/platform/event-store/event-store'
+import { createProjectionRunner } from '@/platform/projection/projection'
 import { createTestApi } from './testing'
 
 type TestApi = Awaited<ReturnType<typeof createTestApi>>
@@ -90,5 +93,65 @@ describe('API du module Chroniques', () => {
 
     expect(event).toBeDefined()
     expect(event.data).toEqual({})
+  })
+
+  it('ne recrée pas les succès après la suppression du compte et une reconstruction', async () => {
+    const api = await createTestApi()
+
+    // Le user créé son village et améliore un bâtiment.
+    await api.post('/api/realm/village', { name: 'Valombre' })
+    api.advance(2)
+    await api.post('/api/realm/village/upgrade', { building: 'mine' })
+
+    expect((await achievementsOf(api)).map((a) => a.id).sort()).toEqual(['builder', 'founder'])
+
+    // Il supprime son compte.
+    const res = await api.api.request('/api/account', {
+      method: 'DELETE',
+      headers: { 'x-test-user': 'alice' },
+    })
+
+    expect(res.status).toBe(200)
+    expect(await achievementsOf(api)).toEqual([])
+
+    // Le moteur reconstruit les succès depuis le journal.
+    const projections = createProjectionRunner(api.db)
+    await projections.rebuild(achievementProjection)
+
+    // Les succès du compte supprimé ne doivent pas réapparaître.
+    expect(await achievementsOf(api)).toEqual([])
+  })
+
+  it("conserve les succès des autres joueurs après l'effacement de l'hôte", async () => {
+    const api = await createTestApi()
+    const store = createEventStore(api.db)
+    const at = Date.UTC(2026, 0, 1)
+
+    // User1 ouvre une expédition, user2 la rejoint et ils gagnent.
+    await store.append('dungeon-rgpd', 0, [
+      { type: 'GameCreated', data: { hostId: 'alice', hostName: 'Alice', at } },
+      { type: 'PlayerJoined', data: { playerId: 'bob', name: 'Bob', at } },
+      { type: 'GameEnded', data: { result: 'won', at } },
+    ])
+
+    expect((await achievementsOf(api, 'alice')).map((a) => a.id).sort()).toEqual([
+      'conqueror',
+      'explorer',
+    ])
+    expect((await achievementsOf(api, 'bob')).map((a) => a.id)).toEqual(['conqueror'])
+
+    const res = await api.api.request('/api/account', {
+      method: 'DELETE',
+      headers: { 'x-test-user': 'alice' },
+    })
+    expect(res.status).toBe(200)
+
+    // Reconstruction à partir du journal anonymisé.
+    const projections = createProjectionRunner(api.db)
+    await projections.rebuild(achievementProjection)
+
+    // User1 ne retrouve aucun succès, mais user2 conserve le sien.
+    expect(await achievementsOf(api, 'alice')).toEqual([])
+    expect((await achievementsOf(api, 'bob')).map((a) => a.id)).toEqual(['conqueror'])
   })
 })
