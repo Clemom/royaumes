@@ -114,6 +114,7 @@ export function createApi({
     realm.channelPolicy,
     dungeon.channelPolicy,
     ranking.channelPolicy,
+    chronicle.channelPolicy,
     market.channelPolicy,
     tavern.channelPolicy,
   ]

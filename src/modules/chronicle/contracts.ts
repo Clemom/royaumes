@@ -29,3 +29,6 @@ export const ACHIEVEMENTS: {
     description: 'Remporter une expédition',
   },
 ]
+
+/** Canal temps réel des Chroniques. */
+export const CHRONICLE_CHANNEL = 'chronicle'

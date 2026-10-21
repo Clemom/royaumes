@@ -67,4 +67,28 @@ describe('API du module Chroniques', () => {
     expect(deleteRes.status).toBe(200)
     expect(await achievementsOf(api)).toEqual([])
   })
+
+  it('refuse le canal Chroniques à un joueur anonyme', async () => {
+    const api = await createTestApi()
+
+    const res = await api.get('/api/stream/chronicle/events?after=0', null)
+
+    expect(res.status).toBe(401)
+  })
+
+  it('autorise le canal sans divulguer les données des événements', async () => {
+    const api = await createTestApi()
+
+    await api.post('/api/realm/village', { name: 'Valombre' }, 'alice')
+
+    const res = await api.get('/api/stream/chronicle/events?after=0', 'alice')
+
+    expect(res.status).toBe(200)
+
+    const body = await res.json()
+    const event = body.events.find((item: { type: string }) => item.type === 'VillageFounded')
+
+    expect(event).toBeDefined()
+    expect(event.data).toEqual({})
+  })
 })
