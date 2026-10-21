@@ -1,37 +1,37 @@
 [
   {
     "scenario": "Village",
-    "requestsPerSecond": 88,
-    "p50": 221,
-    "p99": 368,
+    "requestsPerSecond": 510,
+    "p50": 37,
+    "p99": 62,
     "errors": 0
   },
   {
     "scenario": "Expéditions ouvertes",
-    "requestsPerSecond": 73,
-    "p50": 260,
-    "p99": 453,
+    "requestsPerSecond": 376,
+    "p50": 52,
+    "p99": 73,
     "errors": 0
   },
   {
     "scenario": "Classement",
-    "requestsPerSecond": 72,
-    "p50": 277,
-    "p99": 498,
+    "requestsPerSecond": 305,
+    "p50": 64,
+    "p99": 86,
     "errors": 0
   },
   {
     "scenario": "Marché",
-    "requestsPerSecond": 56,
-    "p50": 339,
-    "p99": 655,
+    "requestsPerSecond": 265,
+    "p50": 74,
+    "p99": 86,
     "errors": 0
   },
   {
     "scenario": "Taverne",
-    "requestsPerSecond": 91,
-    "p50": 207,
-    "p99": 443,
+    "requestsPerSecond": 425,
+    "p50": 46,
+    "p99": 69,
     "errors": 0
   }
 ]
