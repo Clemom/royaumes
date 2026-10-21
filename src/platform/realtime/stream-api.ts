@@ -23,14 +23,16 @@ export interface RealtimeOptions {
 const FORBIDDEN = { error: { code: 'FORBIDDEN', message: 'Canal non autorisé' } } as const
 
 /**
- * Forme sous laquelle un événement est transmis au navigateur. Sur un canal discret,
- * ses données sont retirées : seuls restent sa position, le flux, la version et le type.
+ * Sur un canal discret, les données de l'événement sont masquées.
+ * Sur un canal global, le nom du flux est également masqué :
+ * il peut contenir l'identifiant d'un autre joueur.
  */
 function present(event: StoredEvent, policy: ChannelPolicy) {
   if (!policy.redact) return event
+
   return {
     position: event.position,
-    stream: event.stream,
+    stream: policy.global ? '' : event.stream,
     version: event.version,
     type: event.type,
     data: {},

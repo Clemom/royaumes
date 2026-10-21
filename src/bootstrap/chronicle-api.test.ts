@@ -154,4 +154,20 @@ describe('API du module Chroniques', () => {
     expect(await achievementsOf(api, 'alice')).toEqual([])
     expect((await achievementsOf(api, 'bob')).map((a) => a.id)).toEqual(['conqueror'])
   })
+
+  it("ne révèle pas l'identifiant d'un autre joueur sur le canal Chroniques", async () => {
+    const api = await createTestApi()
+
+    await api.post('/api/realm/village', { name: 'Valombre' }, 'alice')
+
+    const res = await api.get('/api/stream/chronicle/events?after=0', 'bob')
+
+    expect(res.status).toBe(200)
+
+    const { events } = await res.json()
+    const event = events.find((item: { type: string }) => item.type === 'VillageFounded')
+
+    expect(event).toBeDefined()
+    expect(event.stream).not.toContain('alice')
+  })
 })
