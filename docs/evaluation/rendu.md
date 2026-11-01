@@ -87,5 +87,3 @@ Ces choix et limites sont documentés dans les ADR et le registre de dette techn
 ## 7. Livraison
 
 Le projet est versionné sur GitHub et déployé sur Vercel.
-
-Avant la livraison finale, il reste à confirmer la couverture des tests, vérifier la construction de production, publier les commits et créer le tag `eval-fin` demandé dans le TD.

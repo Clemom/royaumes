@@ -56,5 +56,5 @@ La décision sera réexaminée si les notifications doivent être conservées, c
 
 ## Usage de l'IA générative
 
-Un assistant IA a été utilisé pour structurer et rédiger cet ADR à partir des consignes fournies.
+Un assistant IA a été utilisé pour structurer et rédiger cet ADR à partir des consignes fournies. L'IA a contribué au developpement de cette feature.
 Les propositions ont été intégrées progressivement, vérifiées avec TypeScript, Biome et les tests automatisés, puis testées dans le navigateur.

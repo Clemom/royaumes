@@ -53,4 +53,4 @@ Cette décision sera réexaminée si plusieurs modules ont besoin d'un historiqu
 
 ## Usage de l'IA générative
 
-La contribution de ChatGPT au développement et aux décisions d'architecture est décrite dans l'ADR-0010.
+Un assistant IA a été utilisé pour structurer et rédiger cet ADR à partir des consignes fournies. L'IA a contribué au developpement de cette feature.
